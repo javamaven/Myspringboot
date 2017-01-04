@@ -17,7 +17,7 @@ public class UserController {
     @RequestMapping(value={""}, method=RequestMethod.GET)
     public ModelAndView getUserList() {
         List<User> r = new ArrayList<User>(users.values());
-        ModelAndView view = new ModelAndView("/jsp/user/detail.ftl");
+        ModelAndView view = new ModelAndView("jsp/user/detail");
         view.addObject("msg","hahah");
         User user = new User();
         user.setName("ddd");

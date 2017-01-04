@@ -50,22 +50,43 @@
       <version>2.2.2</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <optional>true</optional>
+    </dependency>
+
   </dependencies>
 
   <build>
     <finalName>springbootmaven</finalName>
-    <plugins>
+<!--    <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <dependencies>
-          <!-- spring热部署-->
+          &lt;!&ndash; spring热部署&ndash;&gt;
           <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>springloaded</artifactId>
             <version>1.2.1.RELEASE</version>
           </dependency>
         </dependencies>
+      </plugin>
+    </plugins>-->
+
+    <plugins>
+      <!--
+        用于将应用打成可直接运行的jar（该jar就是用于生产环境中的jar） 值得注意的是，如果没有引用spring-boot-starter-parent做parent，
+                  且采用了上述的第二种方式，这里也要做出相应的改动
+        -->
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <!--fork :  如果没有该项配置，肯呢个devtools不会起作用，即应用不会restart -->
+          <fork>true</fork>
+        </configuration>
       </plugin>
     </plugins>
   </build>
