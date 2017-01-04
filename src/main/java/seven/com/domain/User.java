@@ -1,10 +1,20 @@
 package seven.com.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Created by chenhaijun on 2017/1/3.
  */
+
+@Entity
+@Table(name="tb_myuser")
 public class User {
 
+    @Id
+    @GeneratedValue
     private Long id;
 
     private String name;

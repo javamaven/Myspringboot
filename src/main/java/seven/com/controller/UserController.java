@@ -5,13 +5,18 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import seven.com.domain.User;
+import seven.com.service.UserService;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 @RestController
 @RequestMapping(value="/users")     // 通过这里配置使下面的映射都在/users下，可去除
 public class UserController {
     static Map<Long, User> users = Collections.synchronizedMap(new HashMap<Long, User>());
+
+    @Resource
+    UserService userService;
 
     @ApiOperation(value="获取用户列表", notes="")
     @RequestMapping(value={""}, method=RequestMethod.GET)
@@ -22,6 +27,7 @@ public class UserController {
         User user = new User();
         user.setName("ddd");
         user.setPassword("fdgdfg");
+        userService.save(user);
         view.addObject("user",user);
         System.out.println("fdgdfgdfgdfgdfgdfg");
         return view;
@@ -68,5 +74,21 @@ public class UserController {
     public String deleteUser(@PathVariable Long id) {
         users.remove(id);
         return "success";
+    }
+
+    public static Map<Long, User> getUsers() {
+        return users;
+    }
+
+    public static void setUsers(Map<Long, User> users) {
+        UserController.users = users;
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 }
