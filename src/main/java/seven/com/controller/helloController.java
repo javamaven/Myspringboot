@@ -21,4 +21,10 @@ public class helloController {
 
     }
 
+    @RequestMapping(value="mytest")
+    public void test(){
+        System.out.println("--------------------=当前类=helloController.test()");
+        throw new RuntimeException();
+    }
+
 }
