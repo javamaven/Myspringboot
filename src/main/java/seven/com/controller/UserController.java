@@ -3,6 +3,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import seven.com.domain.User;
 
 import java.util.*;
@@ -14,9 +15,16 @@ public class UserController {
 
     @ApiOperation(value="获取用户列表", notes="")
     @RequestMapping(value={""}, method=RequestMethod.GET)
-    public List<User> getUserList() {
+    public ModelAndView getUserList() {
         List<User> r = new ArrayList<User>(users.values());
-        return r;
+        ModelAndView view = new ModelAndView("/jsp/user/detail.ftl");
+        view.addObject("msg","hahah");
+        User user = new User();
+        user.setName("ddd");
+        user.setPassword("fdgdfg");
+        view.addObject("user",user);
+        System.out.println("fdgdfgdfgdfgdfgdfg");
+        return view;
     }
 
     @ApiOperation(value="创建用户", notes="根据User对象创建用户")
@@ -24,6 +32,10 @@ public class UserController {
     @RequestMapping(value="", method=RequestMethod.POST)
     public String postUser(@RequestBody User user) {
         users.put(user.getId(), user);
+        System.out.println("--------------------user.getId()="+user.getId()+","+"当前类=UserController.postUser()");
+        System.out.println("--------------------user.getId()="+user.getId()+","+"当前类=UserController.postUser()");
+        System.out.println("--------------------user.getId()="+user.getId()+","+"当前类=UserController.postUser()");
+        System.out.println("--------------------user.getId()="+user.getId()+","+"当前类=UserController.postUser()");
         return "success";
     }
 
@@ -32,6 +44,7 @@ public class UserController {
     @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "Long")
     @RequestMapping(value="/{id}", method= RequestMethod.GET)
     public User getUser(@PathVariable Long id) {
+        System.out.println("--------------------id="+id+","+"当前类=UserController.getUser()");
         return users.get(id);
     }
 

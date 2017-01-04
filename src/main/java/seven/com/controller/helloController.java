@@ -15,15 +15,9 @@ public class helloController {
     private String msg = "123456";
 
     @RequestMapping(value="hello")
-    public String hello(Map<String,Object> model){
-        User user = new User();
-        user.setPassword("2334");
-        user.setName("chenhaij");
+    public String hello(){
 
-        model.put("user",user);
-        model.put("msg",msg);
-
-        return "jsp/index.ftl";
+        return "jsp/index";
 
     }
 
