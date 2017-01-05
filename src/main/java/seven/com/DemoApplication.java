@@ -6,11 +6,14 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
+import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import seven.com.servletOrfilter.MyServlet;
 import seven.com.util.Springutil;
 
 import java.util.Arrays;
@@ -21,6 +24,7 @@ import java.util.List;
  */
 @SpringBootApplication
 @EnableScheduling
+@ServletComponentScan
 public class DemoApplication {
 
     /**
@@ -41,6 +45,19 @@ public class DemoApplication {
         fastConverter.setFastJsonConfig(fastJsonConfig);
         HttpMessageConverter<?> converter = fastConverter;
         return new HttpMessageConverters(converter);
+    }
+
+    /**
+     * 代码注册通过ServletRegistrationBean、 FilterRegistrationBean
+     *  和 ServletListenerRegistrationBean 获得控制。
+     *也可以通过实现 ServletContextInitializer 接口直接注册。
+     * @param
+     */
+    @Bean
+    public ServletRegistrationBean MyServlet(){
+
+        return new ServletRegistrationBean(new MyServlet(),"/myServlet/*");
+
     }
 
     public static void main(String args[]){
