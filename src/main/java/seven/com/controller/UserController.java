@@ -51,7 +51,12 @@ public class UserController {
     @RequestMapping(value="/{id}", method= RequestMethod.GET)
     public User getUser(@PathVariable Long id) {
         System.out.println("--------------------id="+id+","+"当前类=UserController.getUser()");
-        return users.get(id);
+        User user = new User();
+        user.setId(1L);
+        user.setName("dfgdfg");
+        user.setPassword("dfgfdgdfgdgdfg");
+        user.setUdateTime(new Date());
+        return user;
     }
 
     @ApiOperation(value="更新用户详细信息", notes="根据url的id来指定更新对象，并根据传过来的user信息来更新用户详细信息")
