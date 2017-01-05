@@ -8,6 +8,7 @@ import seven.com.domain.User;
 import seven.com.service.UserService;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.Null;
 import java.util.*;
 
 @RestController
@@ -28,6 +29,7 @@ public class UserController {
         user.setName("ddd");
         user.setPassword("fdgdfg");
         userService.save(user);
+        user = userService.loadUser(1L);
         view.addObject("user",user);
         System.out.println("fdgdfgdfgdfgdfgdfg");
         return view;
@@ -52,11 +54,11 @@ public class UserController {
     public User getUser(@PathVariable Long id) {
         System.out.println("--------------------id="+id+","+"当前类=UserController.getUser()");
         User user = new User();
-        user.setId(1L);
         user.setName("dfgdfg");
-        user.setPassword("dfgfdgdfgdgdfg");
+        user.setPassword("dfgdfg");
         user.setUdateTime(new Date());
-        return user;
+        userService.save(user);
+        return users.get(id);
     }
 
     @ApiOperation(value="更新用户详细信息", notes="根据url的id来指定更新对象，并根据传过来的user信息来更新用户详细信息")
