@@ -6,6 +6,7 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import seven.com.MyEnvironmentAware.Myseven;
 import seven.com.servletOrfilter.MyServlet;
 import seven.com.util.Springutil;
 
@@ -25,6 +27,7 @@ import java.util.List;
 @SpringBootApplication
 @EnableScheduling
 @ServletComponentScan
+@EnableConfigurationProperties({Myseven.class})
 public class DemoApplication {
 
     /**
