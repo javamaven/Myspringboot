@@ -2,8 +2,14 @@ package seven.com.controller;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import seven.com.MyEnvironmentAware.Myseven;
+import seven.com.MyEnvironmentAware.TestMyproperites;
 import seven.com.domain.User;
 import seven.com.service.UserService;
 
@@ -13,11 +19,19 @@ import java.util.*;
 
 @RestController
 @RequestMapping(value="/users")     // 通过这里配置使下面的映射都在/users下，可去除
+@ConditionalOnClass(TestMyproperites.class)
+@EnableConfigurationProperties(TestMyproperites.class)
 public class UserController {
     static Map<Long, User> users = Collections.synchronizedMap(new HashMap<Long, User>());
 
     @Resource
     UserService userService;
+
+    @Autowired
+    private TestMyproperites testMyproperites;
+
+    @Autowired
+    private Myseven myseven;
 
     @ApiOperation(value="获取用户列表", notes="")
     @RequestMapping(value={""}, method=RequestMethod.GET)
@@ -32,6 +46,10 @@ public class UserController {
         user = userService.loadUser(1L);
         view.addObject("user",user);
         System.out.println("fdgdfgdfgdfgdfgdfg");
+        System.out.println("--------------------tets="+testMyproperites.getName()+","+"当前类=helloController.hello()");
+
+        System.out.println("--------------------myseven="+myseven.getName()+","+"当前类=UserController.getUserList()");
+
         return view;
     }
 
