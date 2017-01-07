@@ -12,9 +12,7 @@ import seven.com.MyEnvironmentAware.Myseven;
 import seven.com.MyEnvironmentAware.TestMyproperites;
 import seven.com.domain.User;
 import seven.com.service.UserService;
-
 import javax.annotation.Resource;
-import javax.validation.constraints.Null;
 import java.util.*;
 
 @RestController
@@ -27,11 +25,19 @@ public class UserController {
     @Resource
     UserService userService;
 
-    @Autowired
-    private TestMyproperites testMyproperites;
+
 
     @Autowired
     private Myseven myseven;
+
+    @RequestMapping(value="testRedis")
+    public void tsetRedis(){
+
+        userService.test();
+
+        System.out.println("-----------打印测试数据--"+userService.listUser().size()+"UserController-----tsetRedis");
+
+    }
 
     @ApiOperation(value="获取用户列表", notes="")
     @RequestMapping(value={""}, method=RequestMethod.GET)
@@ -39,6 +45,9 @@ public class UserController {
         List<User> r = new ArrayList<User>(users.values());
         ModelAndView view = new ModelAndView("jsp/user/detail");
         view.addObject("msg","hahah");
+
+        System.out.println("-----------打印测试数据--myseven"+myseven.getName()+"UserController-----getUserList");
+/*
         User user = new User();
         user.setName("ddd");
         user.setPassword("fdgdfg");
@@ -49,15 +58,26 @@ public class UserController {
         System.out.println("--------------------tets="+testMyproperites.getName()+","+"当前类=helloController.hello()");
 
         System.out.println("--------------------myseven="+myseven.getName()+","+"当前类=UserController.getUserList()");
+*/
+
+        view.addObject("users",userService.listUser());
 
         return view;
     }
 
     @ApiOperation(value="创建用户", notes="根据User对象创建用户")
     @ApiImplicitParam(name = "user", value = "用户详细实体user", required = true, dataType = "User")
-    @RequestMapping(value="", method=RequestMethod.POST)
+    @RequestMapping(value="user", method=RequestMethod.GET)
     public String postUser(@RequestBody User user) {
-        users.put(user.getId(), user);
+
+        user = new User();
+
+        user.setName("wozaid");
+        user.setPassword("nihaodf");
+        user.setUdateTime(new Date());
+
+        userService.save(user);
+
         System.out.println("--------------------user.getId()="+user.getId()+","+"当前类=UserController.postUser()");
         System.out.println("--------------------user.getId()="+user.getId()+","+"当前类=UserController.postUser()");
         System.out.println("--------------------user.getId()="+user.getId()+","+"当前类=UserController.postUser()");
@@ -70,13 +90,7 @@ public class UserController {
     @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "Long")
     @RequestMapping(value="/{id}", method= RequestMethod.GET)
     public User getUser(@PathVariable Long id) {
-        System.out.println("--------------------id="+id+","+"当前类=UserController.getUser()");
-        User user = new User();
-        user.setName("dfgdfg");
-        user.setPassword("dfgdfg");
-        user.setUdateTime(new Date());
-        userService.save(user);
-        return users.get(id);
+        return userService.loadUser(id);
     }
 
     @ApiOperation(value="更新用户详细信息", notes="根据url的id来指定更新对象，并根据传过来的user信息来更新用户详细信息")
@@ -84,20 +98,21 @@ public class UserController {
             @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "Long"),
             @ApiImplicitParam(name = "user", value = "用户详细实体user", required = true, dataType = "User")
     })
+    @RequestMapping(value="/updateuser", method=RequestMethod.PUT)
+    public String putUser() {
 
-    @RequestMapping(value="/{id}", method=RequestMethod.PUT)
-    public String putUser(@PathVariable Long id, @RequestBody User user) {
-        User u = users.get(id);
-        u.setName(user.getName());
-        users.put(id, u);
+        User user = new User();
+        user.setId(1L);
+        user.setPassword("789");
+
         return "success";
     }
 
     @ApiOperation(value="删除用户", notes="根据url的id来指定删除对象")
     @ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "Long")
-    @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+    @RequestMapping(value="delete/{id}", method=RequestMethod.GET)
     public String deleteUser(@PathVariable Long id) {
-        users.remove(id);
+        userService.deleteUser(id);
         return "success";
     }
 
