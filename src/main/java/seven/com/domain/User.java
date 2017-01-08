@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -14,11 +15,13 @@ import java.util.Date;
 
 @Entity
 @Table(name="tb_myuser")
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 7411554675989289001L;
 
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     private String name;
 

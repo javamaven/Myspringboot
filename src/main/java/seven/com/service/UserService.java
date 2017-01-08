@@ -29,7 +29,7 @@ public class UserService {
     @Resource
     private RedisTemplate<String,String> redisTemplate;
 
-    @Cacheable(value = "mykey4",keyGenerator = "keyGenerator")
+    @Cacheable(value = "mykey4")
     public String test(){
 
         ValueOperations<String,String> valueOperations = redisTemplate.opsForValue();
@@ -43,7 +43,7 @@ public class UserService {
         return userdao.save(user);
     }
 
-    @Cacheable(value = "user",keyGenerator = "keyGenerator")
+    @Cacheable(value = "user",keyGenerator = "wiselyKeyGenerator")
     public User loadUser(Long id){
         System.out.println("-----------测试数据--"+id+"UserService-----loadUser");
        return  userJdbcDao.loadUser(id);
@@ -53,9 +53,12 @@ public class UserService {
     public void deleteUser(Long id){
         userdao.delete(id);
     }
-    @Cacheable(value="users",keyGenerator = "keyGenerator")
+
+
+    @Cacheable(value="users")
     public List<User> listUser(){
         System.out.println("-----------打印测试数据--userlist()----UserService-----listUser");
+
        return Lists.newArrayList(userdao.findAll());
 
     }

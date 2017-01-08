@@ -42,7 +42,7 @@ public class UserController {
     @ApiOperation(value="获取用户列表", notes="")
     @RequestMapping(value={""}, method=RequestMethod.GET)
     public ModelAndView getUserList() {
-        List<User> r = new ArrayList<User>(users.values());
+        List<User> r = new ArrayList<User>();
         ModelAndView view = new ModelAndView("jsp/user/detail");
         view.addObject("msg","hahah");
 
