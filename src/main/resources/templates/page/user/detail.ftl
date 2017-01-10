@@ -3,12 +3,15 @@
 <html lang="en">
 
 <body>
-<#list users as user>
+<h3>用户详情</h3>
+-----
+<#if user ??>
 username:${user.name} <br/>
 password:${user.password} <br/>
-</#list>
-msg = ${msg} <br/>
-
+    <#if msg ??>
+        msg = ${msg} <br/>
+    </#if>
+</#if>
 </body>
 
 </html>

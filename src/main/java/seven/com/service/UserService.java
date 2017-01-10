@@ -46,16 +46,33 @@ public class UserService {
     @Cacheable(value = "user",keyGenerator = "wiselyKeyGenerator")
     public User loadUser(Long id){
         System.out.println("-----------测试数据--"+id+"UserService-----loadUser");
-       return  userJdbcDao.loadUser(id);
+        User user = new User();
+        try {
+            user = userdao.findOne(id);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            return user;
+        }
+
     }
 
     @CacheEvict(value={"user,users"})
-    public void deleteUser(Long id){
-        userdao.delete(id);
+    public boolean deleteUser(Long id){
+        boolean flag = false;
+        try{
+            userdao.delete(id);
+            flag = true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            return flag;
+        }
+
     }
 
 
-    @Cacheable(value="users")
+    @Cacheable(value="users",keyGenerator = "wiselyKeyGenerator")
     public List<User> listUser(){
         System.out.println("-----------打印测试数据--userlist()----UserService-----listUser");
 
