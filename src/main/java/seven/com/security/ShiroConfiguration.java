@@ -1,11 +1,20 @@
 package seven.com.security;
 
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.apache.shiro.mgt.SecurityManager;
 /**
  * Created by Administrator on 2017/1/10.
+ * /**
+ * Shiro 配置
+ *
+ Apache Shiro 核心通过 Filter 来实现，就好像SpringMvc 通过DispachServlet 来主控制一样。
+ 既然是使用 Filter 一般也就能猜到，是通过URL规则来进行过滤和权限校验，所以我们需要定义一系列关于URL的规则和访问权限。
+ *
+ * @author Angel(QQ:412887952)
+ * @version v.0.1
  */
 @Configuration
 public class ShiroConfiguration {
@@ -22,13 +31,23 @@ public class ShiroConfiguration {
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager){
 
-        System.out.println("-----------打印测试数据--"++"ShiroConfiguration-----shiroFilter");
+        System.out.println("-----------打印测试数据--初始化权限管理器-ShiroConfiguration-----shiroFilter");
 
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
 
 
+
+        return shiroFilterFactoryBean;
     }
+
+    @Bean
+    public SecurityManager securityManager(){
+        DefaultWebSecurityManager securityManager =  new DefaultWebSecurityManager();
+        return securityManager;
+    }
+
+
 
 }
