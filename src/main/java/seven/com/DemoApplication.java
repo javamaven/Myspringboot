@@ -67,7 +67,6 @@ public class DemoApplication {
 
     /**
      * 文件大小限制
-     * @param args
      */
 
     @Bean
