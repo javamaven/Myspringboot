@@ -4,7 +4,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import seven.com.domain.User;
+import seven.com.domain.SysUser;
 
 import javax.annotation.Resource;
 
@@ -16,9 +16,9 @@ public class UserJdbcDao {
     @Resource
     JdbcTemplate jdbcTemplate;
 
-    public User loadUser(Long id){
+    public SysUser loadUser(Long id){
         String sql = "select * from tb_myuser where id=?";
-        RowMapper<User> rowMapper = new BeanPropertyRowMapper<User>(User.class);
+        RowMapper<SysUser> rowMapper = new BeanPropertyRowMapper<SysUser>(SysUser.class);
         return jdbcTemplate.queryForObject(sql, rowMapper,id);
     }
 

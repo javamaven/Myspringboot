@@ -5,10 +5,10 @@
 <body>
 
 <h3>用户列表</h3>
-<#list users as user>
-id:${user.id} <br/>
-username:${user.name} <br/>
-password:${user.password} <br/>
+<#list sysUsers as sysUser>
+id:${sysUser.id} <br/>
+username:${sysUser.name} <br/>
+password:${sysUser.password} <br/>
 </#list>
 msg = ${msg} <br/>
 

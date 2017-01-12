@@ -5,9 +5,9 @@
 <body>
 <h3>用户详情</h3>
 -----
-<#if user ??>
-username:${user.name} <br/>
-password:${user.password} <br/>
+<#if sysUser ??>
+username:${sysUser.name} <br/>
+password:${sysUser.password} <br/>
     <#if msg ??>
         msg = ${msg} <br/>
     </#if>
