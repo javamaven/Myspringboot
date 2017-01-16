@@ -4,6 +4,7 @@ import javassist.expr.NewArray;
 import org.apache.shiro.authc.LogoutAware;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.authc.LogoutFilter;
@@ -121,6 +122,14 @@ public class ShiroConfiguration {
         UserRealm userRealm = new UserRealm();
 
         userRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+
+        userRealm.setCachingEnabled(true);
+
+        userRealm.setAuthenticationCachingEnabled(true);
+        userRealm.setAuthenticationCacheName("shiro-authenticationCache");
+
+        userRealm.setAuthorizationCachingEnabled(true);
+        userRealm.setAuthorizationCacheName("shiro-authorizationCache");
 
         return userRealm;
 
