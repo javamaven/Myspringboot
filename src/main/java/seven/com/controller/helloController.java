@@ -1,5 +1,8 @@
 package seven.com.controller;
 
+import org.apache.coyote.http2.ByteUtil;
+import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.mongo.MongoProperties;
@@ -26,9 +29,16 @@ public class helloController implements EnvironmentAware{
 
     @RequestMapping(value="hello")
     public String hello(){
+
+
+        String passwordmd5 = Md5Hash.toString("12345".getBytes());
+
+        System.out.println("--------------------passwordmd5="+passwordmd5+","+"当前类=helloController.testpassword()");
+
         return "jsp/index";
 
     }
+
 
     @RequestMapping(value="mytest")
     public void test(){

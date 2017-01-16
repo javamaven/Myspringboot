@@ -2,6 +2,9 @@ package seven.com.controller;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -33,14 +36,29 @@ public class UserController {
     @RequestMapping(value="index")
     public ModelAndView index(HttpSession httpSession){
         httpSession.setAttribute("mylove","seven");
+
+
+
+
+
         ModelAndView view = new ModelAndView("page/user/index");
         return view;
     }
 
     @RequestMapping(value="login")
-    public ModelAndView login(HttpSession httpSession){
+    public ModelAndView login(HttpSession httpSession,@ModelAttribute SysUser sysUser){
+
         httpSession.setAttribute("mylove","seven");
+
+       Subject subject = SecurityUtils.getSubject();
+
+        UsernamePasswordToken token = new UsernamePasswordToken(sysUser.getUsername(), sysUser.getPassword());
+
+        subject.login(token);
+
         ModelAndView view = new ModelAndView("page/user/login");
+
+
         return view;
     }
 

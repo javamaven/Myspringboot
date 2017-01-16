@@ -1,12 +1,21 @@
 package seven.com.security;
 
+import javassist.expr.NewArray;
+import org.apache.shiro.authc.LogoutAware;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.filter.authc.LogoutFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import org.apache.shiro.mgt.SecurityManager;
+
+import javax.servlet.Filter;
 
 
 /**
@@ -48,6 +57,26 @@ public class ShiroConfiguration {
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
 
 
+        //自定义filter
+        Map<String,Filter> filters = new LinkedHashMap<String,Filter>();
+
+
+        LogoutFilter logoutFilter = new LogoutFilter();
+
+        logoutFilter.setRedirectUrl("/login");
+
+        filters.put("logout",logoutFilter);
+
+
+        SysUserFilter sysUserFilter = new SysUserFilter();
+
+        sysUserFilter.setErrorUrl("unauth");
+
+        filters.put("access",sysUserFilter);
+
+
+        shiroFilterFactoryBean.setFilters(filters);
+
         //拦截器.
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
 
@@ -56,16 +85,73 @@ public class ShiroConfiguration {
 
         //<!-- 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
         //<!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
-        filterChainDefinitionMap.put("/users/**", "authc");
+        filterChainDefinitionMap.put("/users/**", "authc,access");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+
         return shiroFilterFactoryBean;
+    }
+
+    @Bean
+    public HashedCredentialsMatcher hashedCredentialsMatcher(){
+        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+
+        hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
+        hashedCredentialsMatcher.setHashIterations(1);//散列的次数，比如散列两次，相当于 md5(md5(""));
+
+        return hashedCredentialsMatcher;
+    }
+
+    /*
+    * 	<bean id="userRealm" class="com.seven.chen.ream.UserRealm">
+	 	<property name="cachingEnabled" value="true"/>
+	 	<property name="authenticationCachingEnabled" value="true"/>
+	 	<property name="authenticationCacheName" value="shiro-authenticationCache"/>
+	 	<property name="authorizationCachingEnabled" value="true"/>
+	 	<property name="authorizationCacheName" value="shiro-authorizationCache"/>
+		<property name="credentialsMatcher" ref="hashMatcher"></property>
+	</bean>
+    *
+    * */
+
+
+    @Bean
+    public  UserRealm userRealm(){
+
+        UserRealm userRealm = new UserRealm();
+
+        userRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+
+        return userRealm;
+
     }
 
     @Bean
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        securityManager.setRealm(userRealm());
+        securityManager.setCacheManager(ehCacheManager());
         return securityManager;
     }
+
+    /*启用注解
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager){
+
+        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+
+        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+
+        return  authorizationAttributeSourceAdvisor;
+
+    }
+    */
+
+    @Bean
+    public EhCacheManager ehCacheManager(){
+        EhCacheManager ehCacheManager = new EhCacheManager();
+        ehCacheManager.setCacheManagerConfigFile("classpath:config/ehcache-shiro.xml");
+        return ehCacheManager;
+    }
+
 }
 

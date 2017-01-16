@@ -88,7 +88,7 @@ public class SysUser implements Serializable {
     }
 
     public String getCredentialsSalt(){
-        return this.username+this.salt;
+        return this.username;
     }
 
     public Integer getState() {
