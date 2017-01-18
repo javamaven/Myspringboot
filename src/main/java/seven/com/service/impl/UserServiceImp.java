@@ -45,10 +45,12 @@ public class UserServiceImp implements UserService{
     }
 
     @Override
+    @Cacheable(value = "userbyname",keyGenerator = "wiselyKeyGenerator")
     public SysUser loadUserByUsername(String username) {
         return userdao.findByUsername(username);
     }
 
+    @Cacheable(value = "userbyid",keyGenerator = "wiselyKeyGenerator")
     public SysUser loadUser(Long id){
         System.out.println("-----------测试数据--"+id+"UserService-----loadUser");
         SysUser sysUser = new SysUser();

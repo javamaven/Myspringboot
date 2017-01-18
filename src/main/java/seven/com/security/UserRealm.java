@@ -5,6 +5,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import seven.com.domain.SysPermission;
 import seven.com.domain.SysRole;
@@ -61,6 +62,25 @@ public class UserRealm extends AuthorizingRealm {
 
         }
         return info;
+    }
+
+    @Override
+    protected void clearCachedAuthorizationInfo(PrincipalCollection principals) {
+        //授权存的key是user对象  principals就是一个user对象
+        System.out.println("-------------clear Authorization-----------------");
+
+
+        super.clearCachedAuthorizationInfo(principals);
+    }
+
+    @Override
+    protected void clearCachedAuthenticationInfo(PrincipalCollection principals) {
+        //验证存的key是张三
+        System.out.println("-----------------clear Authentication---------------");
+        SysUser user = (SysUser)principals.getPrimaryPrincipal();
+        SimplePrincipalCollection spc = new SimplePrincipalCollection(user.getUsername(),getName());
+
+        super.clearCachedAuthenticationInfo(spc);
     }
 
 }
