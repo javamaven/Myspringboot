@@ -23,6 +23,8 @@ import javax.annotation.Resource;
 @Configuration
 public class helloController implements EnvironmentAware{
 
+
+
     private String msg = "123456";
 
     private String url ;

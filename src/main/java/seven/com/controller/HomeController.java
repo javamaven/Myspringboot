@@ -6,6 +6,8 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,9 +19,12 @@ import seven.com.domain.SysUser;
 @Controller
 public class HomeController {
 
+    private Logger logger =  LoggerFactory.getLogger(this.getClass());
+
     @RequestMapping(value="/login",method = RequestMethod.GET)
     public ModelAndView  login(){
 
+        logger.info("-----------------------------------------测试日志记录------------------------------");
         return new ModelAndView("login");
     }
 
@@ -34,6 +39,8 @@ public class HomeController {
         UsernamePasswordToken token = new UsernamePasswordToken(sysUser.getUsername(), sysUser.getPassword());
 
         String securitypassword = new Md5Hash("12345", "admin").toHex();
+
+        logger.info("-----------------------------------------测试日志记录------------------------------");
 
         System.out.println("--------------------securitypassword="+securitypassword+","+"当前类=HomeController.login()");
         
