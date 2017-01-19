@@ -25,6 +25,17 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
+
+      <exclusions>
+        <exclusion>
+          <artifactId>log4j-over-slf4j</artifactId>
+          <groupId>org.slf4j</groupId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -122,6 +133,14 @@
       <version>1.2.2</version>
     </dependency>
 
+
+    <!--Java程序运行需要的包 上线的话 scope 需要打开-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-tomcat</artifactId>
+     <scope>provided</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -164,7 +183,14 @@
          </configuration>
       </plugin>
       -->
-
+      <!--定义war打包的项目名-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <warName>Myspringboot</warName>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
